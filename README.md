@@ -1,5 +1,5 @@
 # Abysz deflicking & temporal coherence lab. 
-## Automatic1111 Extension. Beta 0.1.9
+## Automatic1111 Extension. Beta 0.2.0
 
 ![0 1 9](https://user-images.githubusercontent.com/112580728/228404036-5dbf11f1-51e3-4fb0-9c72-c3c2c0deb00e.png)
 |
