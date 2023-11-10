@@ -7,12 +7,12 @@ from modules import shared
 from modules import scripts
 from modules import script_callbacks
 
-from helpers.file_helpers import copy_images, sequential_generated_rename
-from helpers.image_helpers import blur_all_images, denoise, dilate_all_images, greyscale_all_images, main_process_loop, normalize_deflicker, over_fuse, overlay_deflicker, overlay_images, sresize
-from helpers.constant_helpers import init_project_folders
-from helpers.grado_helpers import add_tab
-from helpers.test_helpers import test_dfi
-from helpers.video_helpers import dfi_video
+from .helpers.file_helpers import copy_images, sequential_generated_rename
+from .helpers.image_helpers import blur_all_images, denoise, dilate_all_images, greyscale_all_images, main_process_loop, normalize_deflicker, over_fuse, overlay_deflicker, overlay_images, sresize
+from .helpers.constant_helpers import init_project_folders
+from .helpers.grado_helpers import add_tab
+from .helpers.test_helpers import test_dfi
+from .helpers.video_helpers import dfi_video
 
 class Script(scripts.Script):
     def title(self):
