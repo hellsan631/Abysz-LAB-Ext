@@ -84,7 +84,7 @@ def greyscale_all_images(
             # Aplicar un umbral y guardar la imagen resultante en la source MaskD. Menos es más.
             umbral = umbral_size
             umbralizado = cv2.threshold(diff, umbral, 255, cv2.THRESH_BINARY_INV)[1] # Invertir los colores
-            cv2.imwrite(os.path.join(maskD, f'{contador-1:04d}.png'), umbralizado)
+            cv2.imwrite(os.path.join(maskD, f'{contador-1:05d}.png'), umbralizado)
     
         anterior = cv2.imread(os.path.join(source, filename), cv2.IMREAD_GRAYSCALE)
         contador += 1
