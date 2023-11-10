@@ -9,7 +9,7 @@ from modules import script_callbacks
 
 from helpers.file_helpers import copy_images, copy_rename_images
 from helpers.image_helpers import blur_all_images, denoise, dilate_all_images, greyscale_all_images, main_process_loop, normalize_deflicker, over_fuse, overlay_deflicker, overlay_images, sresize
-from helpers.constant_helpers import init_project_folders
+from helpers.constant_helpers import destroy_project_folders, init_project_folders
 from helpers.grado_helpers import add_tab
 from helpers.test_helpers import test_dfi
 from helpers.video_helpers import dfi_video
@@ -42,6 +42,8 @@ def main(
     frames_limit,
     magick_file_location_override,
 ):
+    # ensure a clean project
+    destroy_project_folders()
     (maskD, maskS, output, source, gen) = init_project_folders()
     
     copy_images(reference_frames_folder, source_folder=source, frames_limit=frames_limit)

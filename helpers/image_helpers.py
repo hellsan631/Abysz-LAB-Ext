@@ -218,8 +218,12 @@ def main_process_loop(
         output_file = os.path.join(frames_output_folder, output_files[0])
         
         # Apply the magick composite command with the desired options
-        compose_command = f"composite -compose CopyOpacity {os.path.join(maskD, mask)} {output_file} {os.path.join(maskS, 'result.png')}"
-        run_system_command(get_magic_command(compose_command), magick_file_location_override)
+
+        magick_target_file = f'"{os.path.join(maskD, mask)}"'
+        magick_output_file = f'"{output_file}"'
+        magick_temp_file = f'"{os.path.join(maskS, "result.png")}"'
+        compose_command = f'composite -compose CopyOpacity {magick_target_file} {magick_output_file} {magick_temp_file}'
+        run_system_command(get_magic_command(compose_command, magick_file_location_override))
         
         # Get the name of the file in output without any extension
         name = os.path.splitext(os.path.basename(output_file))[0]
@@ -275,7 +279,10 @@ def main_process_loop(
             ext = ''
                             
         # Composite the image from MaskS and Gen with dissolution (if defined) and save it in the output folder
-        composite_command = f"composite {'-dissolve ' + str(dissolve) + '%' if dissolve is not None else ''} {maskS}/{filename}.png {gen}/{filename}{ext} {frames_output_folder}/{filename}{ext}"
+        magick_disolve_file = f'"{maskS}/{filename}.png"'
+        magick_target_file = f'"{gen}/{filename}{ext}"'
+        magick_dest_file = f'"{frames_output_folder}/{filename}{ext}"'
+        composite_command = f"composite {'-dissolve ' + str(dissolve) + '%' if dissolve is not None else ''} {magick_disolve_file} {magick_target_file} {magick_dest_file}"
         run_system_command(get_magic_command(composite_command, magick_file_location_override))
         
         denoise_loop = inter_denoise_speed

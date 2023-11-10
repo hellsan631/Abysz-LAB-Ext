@@ -34,3 +34,7 @@ def init_folder(folder_location):
     os.makedirs(folder_location, exist_ok=True)
     print(f"Folder {folder_location} created.")
     return full_path
+
+
+def destroy_project_folders():
+    shutil.rmtree(RUN_FOLDER)
