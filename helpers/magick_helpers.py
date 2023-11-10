@@ -1,7 +1,7 @@
 import os
 
 def get_magic_command(command, magick_executible_override_path = None):
-    if magick_executible_override_path is None or magick_executible_override_path.trim() == '':
+    if magick_executible_override_path is None or magick_executible_override_path == '':
         return f'magick {command}'
     
     # ensure that `magick_executible_override_path` actually exists

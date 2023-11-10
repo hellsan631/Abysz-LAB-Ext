@@ -160,6 +160,10 @@ def main_process_loop(
     pbar = tqdm(total=None, desc='Running Main Process Loop', unit=' ops', leave=True)
     loop_count = 0
 
+    # remove all files in `frames_output_folder`
+    for file in os.listdir(frames_output_folder):
+        os.remove(os.path.join(frames_output_folder, file))
+
     # Ensure that we have a file in the Gen folder before beginning the loop
     gen_files = os.listdir(gen)
     if gen_files:
@@ -172,10 +176,6 @@ def main_process_loop(
         mask_files = sorted(os.listdir(maskD))
         if not mask_files:
             print(f"No frames left")
-            # Delete the Source, MaskS, and MaskD folders if there are no more files to process
-            shutil.rmtree(maskD)
-            shutil.rmtree(maskS)
-            shutil.rmtree(source)
             break
         
         extra_mod = fine_blur
