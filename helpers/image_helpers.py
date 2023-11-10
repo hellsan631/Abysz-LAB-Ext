@@ -82,7 +82,7 @@ def greyscale_all_images(
 
             # Apply a threshold and save the resulting image to the MaskD source. Less is more.
             thresholded_file = cv2.threshold(diff, dfi_strength, 255, cv2.THRESH_BINARY_INV)[1] # Intrevert Colors
-            cv2.imwrite(os.path.join(maskD, f'{count-1:04d}.png'), thresholded_file)
+            cv2.imwrite(os.path.join(maskD, f'{count-1:05d}.png'), thresholded_file)
     
         previous_image = cv2.imread(os.path.join(source, filename), cv2.IMREAD_GRAYSCALE)
 

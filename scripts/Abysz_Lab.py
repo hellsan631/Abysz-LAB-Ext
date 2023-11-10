@@ -156,7 +156,7 @@ def extract_video(video_extract_original_folder, video_extract_output_folder, fp
         frame_count += 1
 
         # Construir el nombre del archivo de salida
-        output_filename = os.path.join(output_dir, 'frame_{:04d}.jpeg'.format(frame_count))
+        output_filename = os.path.join(output_dir, 'frame_{:05d}.jpeg'.format(frame_count))
 
         # Guardar el frame como una imagen
         cv2.imwrite(output_filename, frame)
