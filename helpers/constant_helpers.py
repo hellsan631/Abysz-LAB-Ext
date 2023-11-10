@@ -13,8 +13,8 @@ OVERLAY_FOLDER = f'{RUN_FOLDER}/Overlay'
 
 
 def init_deflicker_folders():
-    overlay = init_folder(OVERLAY_FOLDER)
-    return (overlay,)
+    overlay_folder = init_folder(OVERLAY_FOLDER)
+    return (overlay_folder,overlay_folder)
 
 
 def init_project_folders(

@@ -75,7 +75,7 @@ def main(
 
         
 def deflickers(deflicker_frames_folder, deflicker_frames_output_folder, ddf_strength, over_strength, norm_strength):
-    (overlay) = init_deflicker_folders()
+    (overlay_folder, _) = init_deflicker_folders()
     dyndef(
         deflicker_frames_folder, 
         deflicker_frames_output_folder, 
@@ -86,7 +86,7 @@ def deflickers(deflicker_frames_folder, deflicker_frames_output_folder, ddf_stre
         deflicker_frames_output_folder, 
         ddf_strength, 
         over_strength,
-        overlay,
+        overlay_folder,
     )
     normalize_deflicker(
         deflicker_frames_folder,
