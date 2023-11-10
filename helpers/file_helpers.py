@@ -27,6 +27,8 @@ def copy_images(
             if frames_limit > 0 and count >= frames_limit:
                 break
 
+    print(f"Total frames copied: {count}")
+
 
 def copy_rename_images(
     frames_folder,
