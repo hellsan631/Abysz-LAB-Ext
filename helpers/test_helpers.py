@@ -2,17 +2,18 @@ import os
 import cv2
 from tqdm import tqdm
 
-from constant_helpers import init_project_folders
-from file_helpers import copy_images
-from image_helpers import blur_all_images, denoise, dilate_all_images, greyscale_all_images, sresize
+from helpers.constant_helpers import RUN_FOLDER, init_project_folders
+from helpers.file_helpers import copy_images
+from helpers.image_helpers import blur_all_images, denoise, dilate_all_images, greyscale_all_images, sresize
+
+maskDT = f"{RUN_FOLDER}/MaskDT"
+maskST = f"{RUN_FOLDER}/MaskST"
+sourceT = f"{RUN_FOLDER}/SourceT"
+outputT = f"{RUN_FOLDER}/OutputT"
+genT = f"{RUN_FOLDER}/GenT"
+
 
 def test_dfi(reference_frames_folder, generated_frames_folder, denoise_blur, dfi_strength, dfi_deghost, test_mode, smooth):
-    maskDT = "./extensions/Abysz-LAB-Ext/scripts/Run/MaskDT"
-    maskST = "./extensions/Abysz-LAB-Ext/scripts/Run/MaskST"
-    sourceT = "./extensions/Abysz-LAB-Ext/scripts/Run/SourceT"
-    outputT = "./extensions/Abysz-LAB-Ext/scripts/Run/Output"
-    genT = "./extensions/Abysz-LAB-Ext/scripts/Run/Gen"
-
     (maskD, maskS, output, source, gen) = init_project_folders(
         maskD_override=maskDT,
         maskS_override=maskST,

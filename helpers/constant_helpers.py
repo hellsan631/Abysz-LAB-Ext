@@ -1,11 +1,14 @@
 import os
 import shutil
 
-full_script_folder = "./extensions/Abysz-LAB-Ext/scripts/Run/Source"
-mask_directory_folder = './extensions/Abysz-LAB-Ext/scripts/Run/MaskD'
-mask_temp_source_folder = './extensions/Abysz-LAB-Ext/scripts/Run/MaskS'
-output_folder = './extensions/Abysz-LAB-Ext/scripts/Run/Output'
-gen_folder = './extensions/Abysz-LAB-Ext/scripts/Run/Gen'
+MAIN_EXTENSION_FOLDER = "./extensions/Abysz-LAB-Ext"
+RUN_FOLDER = f'{MAIN_EXTENSION_FOLDER}/Run'
+
+FULL_SCRIPT_FOLDER = f'{RUN_FOLDER}/Source'
+MASK_DIRECTORY_FOLDER = f'{RUN_FOLDER}/MaskD'
+MASK_TEMP_SOURCE_FOLDER = f'{RUN_FOLDER}/MaskS'
+OUTPUT_FOLDER = f'{RUN_FOLDER}/Output'
+GEN_FOLDER = f'{RUN_FOLDER}/Gen'
 
 
 def init_project_folders(
@@ -15,11 +18,11 @@ def init_project_folders(
     source_override = None,
     gen_override = None,
 ):
-    maskD = init_folder(maskD_override or mask_directory_folder)
-    maskS = init_folder(maskS_override or mask_temp_source_folder)
-    output = init_folder(output_override or output_folder)
-    source = init_folder(source_override or full_script_folder)
-    gen = init_folder(gen_override or gen_folder)
+    maskD = init_folder(maskD_override or MASK_DIRECTORY_FOLDER)
+    maskS = init_folder(maskS_override or MASK_TEMP_SOURCE_FOLDER)
+    output = init_folder(output_override or OUTPUT_FOLDER)
+    source = init_folder(source_override or FULL_SCRIPT_FOLDER)
+    gen = init_folder(gen_override or GEN_FOLDER)
 
     return maskD, maskS, output, source, gen
 

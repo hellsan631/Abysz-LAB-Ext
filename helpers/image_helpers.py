@@ -6,8 +6,8 @@ import shutil
 import math
 from tqdm import tqdm
 
-from magick_helpers import get_magic_command
-from system_helpers import run_system_command
+from helpers.magick_helpers import get_magic_command
+from helpers.system_helpers import run_system_command
 
 def sresize(reference_frames_folder, source_folder):
     gen_folder = reference_frames_folder
