@@ -373,6 +373,38 @@ def overlay_images(
 
     # Guardar la imagen resultante
     return blended_image
+   
+    
+def dyndef(
+    deflicker_frames_folder, 
+    deflicker_frames_output_folder, 
+    ddf_strength
+):
+    if ddf_strength <= 0: # Condición 1: strength debe ser mayor a 0
+        return
+    imgs = []
+    files = sorted(os.listdir(deflicker_frames_folder))
+    
+    for file in  tqdm(files, desc="Loading images for deflickering"):
+        img = cv2.imread(os.path.join(deflicker_frames_folder, file))
+        imgs.append(img)
+    
+    for idx in tqdm(range(len(imgs)-1, 0, -1), desc="[Deflickering] - dyndef"):
+        current_img = imgs[idx]
+        prev_img = imgs[idx-1]
+        alpha = ddf_strength
+        
+        current_img = cv2.addWeighted(current_img, alpha, prev_img, 1-alpha, 0)
+        imgs[idx] = current_img
+        
+        if not os.path.exists(deflicker_frames_output_folder):
+            os.makedirs(deflicker_frames_output_folder)
+            
+        output_path = os.path.join(deflicker_frames_output_folder, files[idx]) # Use the same name as the original
+        cv2.imwrite(output_path, current_img)
+    
+    # Copy the first file from the originals at the end of the process
+    shutil.copy(os.path.join(deflicker_frames_folder, files[0]), os.path.join(deflicker_frames_output_folder, files[0]))
 
 
 def over_fuse(fuse_style_frames_folder, fuse_video_frames_folder, fuse_output_frames_folder, fuse_strength):
@@ -403,16 +435,13 @@ def over_fuse(fuse_style_frames_folder, fuse_video_frames_folder, fuse_output_fr
             break
 
 
-def overlay_deflicker(deflicker_frames_folder, deflicker_frames_output_folder, ddf_strength, over_strength):
-    if over_strength <= 0: # Condición 1: strength debe ser mayor a 0
+def overlay_deflicker(deflicker_frames_folder, deflicker_frames_output_folder, ddf_strength, over_strength, overlay_folder):
+    if over_strength <= 0: # Condition 1: strength must be greater than 0
         return
        
-    # Si ddf_strength y/o over_strength son mayores a 0, utilizar deflicker_frames_output_folder en lugar de deflicker_frames_folder
+    # If ddf_strength and/or over_strength are greater than 0, use deflicker_frames_output_folder instead of deflicker_frames_folder
     if ddf_strength > 0:
         deflicker_frames_folder = deflicker_frames_output_folder    
-        
-    if not os.path.exists("overtemp"):
-        os.makedirs("overtemp")
             
     if not os.path.exists(deflicker_frames_output_folder):
         os.makedirs(deflicker_frames_output_folder)
@@ -423,30 +452,27 @@ def overlay_deflicker(deflicker_frames_folder, deflicker_frames_output_folder, d
     image2_path = os.path.join(gen_path, images[1])
      
     fused_image = overlay_images(image1_path, image2_path, over_strength)
-    fuseover_path = "overtemp"
+
     filename = os.path.basename(image1_path)
-    fused_image.save(os.path.join(fuseover_path, filename))
+    fused_image.save(os.path.join(overlay_folder, filename))
     
-    # Obtener una lista de todos los archivos en la carpeta "Gen"
+    # Get a list of all files in the "Gen" folder
     gen_files = sorted(os.listdir(deflicker_frames_folder))
     
     for i in tqdm(range(len(gen_files) - 1), desc="Overlaying frames"):
         image1_path = os.path.join(deflicker_frames_folder, gen_files[i])
         image2_path = os.path.join(deflicker_frames_folder, gen_files[i+1])
         blended_image = overlay_images(image1_path, image2_path, over_strength)
-        blended_image.save(os.path.join("overtemp", gen_files[i+1]))
+        blended_image.save(os.path.join(overlay_folder, gen_files[i+1]))
     
-    # Definimos la ruta de la carpeta "overtemp"
-    ruta_overtemp = "overtemp"
-    
-    for archivo in tqdm(os.listdir(ruta_overtemp) , desc="Moving Over Overlaying frames"):
-        origen = os.path.join(ruta_overtemp, archivo)
-        destino = os.path.join(deflicker_frames_output_folder, archivo)
-        shutil.move(origen, destino)
+    for archivo in tqdm(os.listdir(overlay_folder) , desc="Moving Over Overlaying frames"):
+        origin = os.path.join(overlay_folder, archivo)
+        destination = os.path.join(deflicker_frames_output_folder, archivo)
+        shutil.move(origin, destination)
         
     # Ajustar contraste y brillo para cada imagen en la carpeta de entrada
     if over_strength >= 0.4:
-        for nombre_archivo in tdem(os.listdir(deflicker_frames_output_folder), desc="Adjusting contrast and brightness"):
+        for nombre_archivo in tqdm(os.listdir(deflicker_frames_output_folder), desc="Adjusting contrast and brightness"):
             # Cargar imagen
             ruta_archivo = os.path.join(deflicker_frames_output_folder, nombre_archivo)
             img = cv2.imread(ruta_archivo)

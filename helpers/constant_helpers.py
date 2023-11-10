@@ -9,6 +9,12 @@ MASK_DIRECTORY_FOLDER = f'{RUN_FOLDER}/MaskD'
 MASK_TEMP_SOURCE_FOLDER = f'{RUN_FOLDER}/MaskS'
 OUTPUT_FOLDER = f'{RUN_FOLDER}/Output'
 GEN_FOLDER = f'{RUN_FOLDER}/Gen'
+OVERLAY_FOLDER = f'{RUN_FOLDER}/Overlay'
+
+
+def init_deflicker_folders():
+    overlay = init_folder(OVERLAY_FOLDER)
+    return (overlay,)
 
 
 def init_project_folders(
