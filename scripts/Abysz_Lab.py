@@ -7,7 +7,7 @@ from modules import shared
 from modules import scripts
 from modules import script_callbacks
 
-from helpers.file_helpers import copy_images, sequential_generated_rename
+from helpers.file_helpers import copy_images, copy_rename_images
 from helpers.image_helpers import blur_all_images, denoise, dilate_all_images, greyscale_all_images, main_process_loop, normalize_deflicker, over_fuse, overlay_deflicker, overlay_images, sresize
 from helpers.constant_helpers import init_project_folders
 from helpers.grado_helpers import add_tab
@@ -44,22 +44,11 @@ def main(
 ):
     (maskD, maskS, output, source, gen) = init_project_folders()
     
-    copy_images(reference_frames_folder, source_folder=source, frames_limit=frames_limit)
+    copy_images(reference_frames_folder, destination=source, frames_limit=frames_limit)
     
     sresize(generated_frames_folder, source_folder=source)
     
-    sequential_generated_rename(generated_frames_folder)
-    
-    # Obtener el primer archivo de la carpeta generated_frames_folder
-    gen_files = os.listdir(generated_frames_folder)
-    if gen_files:
-        first_gen_file = gen_files[0]
-
-        # Copiar el archivo a la carpeta "Output" y reemplazar si ya existe
-        #output_file = "Output" + first_gen_file
-        #shutil.copyfile(generated_frames_folder + first_gen_file, output_file)
-        output_file = os.path.join(frames_output_folder, first_gen_file)
-        shutil.copyfile(os.path.join(generated_frames_folder, first_gen_file), output_file)
+    copy_rename_images(generated_frames_folder, gen)
    
     denoise(denoise_blur, source_folder=source)
 
@@ -71,7 +60,7 @@ def main(
         maskD=maskD,
         maskS=maskS,
         source=source,
-        generated_frames_folder=generated_frames_folder,
+        gen=gen,
         frames_output_folder=frames_output_folder,
         fine_blur=fine_blur,
         frame_refresh_frequency=frame_refresh_frequency,

@@ -31,7 +31,7 @@ def test_dfi(reference_frames_folder, generated_frames_folder, denoise_blur, dfi
         indices = list(range(test_frames)) # Los primeros 30 índices
                 
     # Llamar a la función copy_images para copiar las imágenes
-    copy_images(reference_frames_folder, destination=source, frame_indicies=indices)
+    copy_images(reference_frames_folder, source_folder=source, frame_indicies=indices)
     sresize(generated_frames_folder, source)
     denoise(denoise_blur, source)
 
@@ -39,7 +39,6 @@ def test_dfi(reference_frames_folder, generated_frames_folder, denoise_blur, dfi
     dilate_all_images(maskD, dfi_deghost)
     blur_all_images(maskD, smooth)
 
-                
     if test_mode == 0:         
         nombres = os.listdir(maskD) # obtener los nombres de los archivos en la carpeta MaskDT
         ancho = 0 # variable para guardar el ancho acumulado de las ventanas

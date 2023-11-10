@@ -157,6 +157,13 @@ def main_process_loop(
     pbar = tqdm(total=None, desc='Running Main Process Loop', unit=' ops', leave=True)
     loop_count = 0
 
+    # Ensure that we have a file in the Gen folder before beginning the loop
+    gen_files = os.listdir(generated_frames_folder)
+    if gen_files:
+        first_gen_file = gen_files[0]
+        output_file = os.path.join(frames_output_folder, first_gen_file)
+        shutil.copyfile(os.path.join(generated_frames_folder, first_gen_file), output_file)
+
     # Add a while loop to run the code in an infinite loop
     while True:
         mask_files = sorted(os.listdir(maskD))
@@ -195,8 +202,11 @@ def main_process_loop(
         # save the modified image with the same name and path
         cv2.imwrite(maskp_path, img_blur)
 
+        all_output_files = os.listdir(frames_output_folder)
+
         # Get the path of the image in the output subfolder that has the same name as the image in MaskD
-        output_files = [f for f in os.listdir(frames_output_folder) if os.path.splitext(f)[0] == maskname]
+        output_files = [f for f in all_output_files if os.path.splitext(f)[0] == maskname]
+        
         if not output_files:
             print(f"No image found in {frames_output_folder} with the same name as {maskname}.")
             exit(1)
