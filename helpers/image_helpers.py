@@ -142,7 +142,7 @@ def main_process_loop(
     maskD,
     maskS,
     source,
-    generated_frames_folder,
+    gen,
     frames_output_folder,
     fine_blur,
     frame_refresh_frequency,
@@ -158,11 +158,11 @@ def main_process_loop(
     loop_count = 0
 
     # Ensure that we have a file in the Gen folder before beginning the loop
-    gen_files = os.listdir(generated_frames_folder)
+    gen_files = os.listdir(gen)
     if gen_files:
         first_gen_file = gen_files[0]
         output_file = os.path.join(frames_output_folder, first_gen_file)
-        shutil.copyfile(os.path.join(generated_frames_folder, first_gen_file), output_file)
+        shutil.copyfile(os.path.join(gen, first_gen_file), output_file)
 
     # Add a while loop to run the code in an infinite loop
     while True:
@@ -205,10 +205,11 @@ def main_process_loop(
         all_output_files = os.listdir(frames_output_folder)
 
         # Get the path of the image in the output subfolder that has the same name as the image in MaskD
-        output_files = [f for f in all_output_files if os.path.splitext(f)[0] == maskname]
+        output_files = [file for file in all_output_files if os.path.splitext(file)[0] == maskname]
         
         if not output_files:
             print(f"No image found in {frames_output_folder} with the same name as {maskname}.")
+            print(f"All files in {frames_output_folder}: {all_output_files}")
             exit(1)
         
         output_file = os.path.join(frames_output_folder, output_files[0])
@@ -263,15 +264,15 @@ def main_process_loop(
             break
         
         # Get the extension of the file in Gen with the same name
-        gen_files = [f for f in os.listdir(generated_frames_folder) if os.path.isfile(os.path.join(generated_frames_folder, f)) and f.startswith(filename)]
+        gen_files = [f for f in os.listdir(gen) if os.path.isfile(os.path.join(gen, f)) and f.startswith(filename)]
         if gen_files:
             ext = os.path.splitext(gen_files[0])[1]
         else:
-            print(f"No file found with the name '{filename}' in the folder '{generated_frames_folder}'")
+            print(f"No file found with the name '{filename}' in the folder '{gen}'")
             ext = ''
                             
         # Composite the image from MaskS and Gen with dissolution (if defined) and save it in the output folder
-        composite_command = f"composite {'-dissolve ' + str(dissolve) + '%' if dissolve is not None else ''} {maskS}/{filename}.png {generated_frames_folder}/{filename}{ext} {frames_output_folder}/{filename}{ext}"
+        composite_command = f"composite {'-dissolve ' + str(dissolve) + '%' if dissolve is not None else ''} {maskS}/{filename}.png {gen}/{filename}{ext} {frames_output_folder}/{filename}{ext}"
         run_system_command(get_magic_command(composite_command, magick_file_location_override))
         
         denoise_loop = inter_denoise_speed
