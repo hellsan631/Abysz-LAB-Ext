@@ -44,7 +44,7 @@ def main(
 ):
     (maskD, maskS, output, source, gen) = init_project_folders()
     
-    copy_images(reference_frames_folder, destination=source, frames_limit=frames_limit)
+    copy_images(reference_frames_folder, source_folder=source, frames_limit=frames_limit)
     
     sresize(generated_frames_folder, source_folder=source)
     
