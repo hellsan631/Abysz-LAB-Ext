@@ -70,21 +70,24 @@ def greyscale_all_images(
     maskD,
     dfi_strength,
 ):
-    count = 1
-    sorted_list = sorted(os.listdir(source))
-    previous_image = None
-    # Iterate through the image files in the Source source
-    for filename in tqdm(sorted_list, desc="Greyscaling Source Images"):
-        # Load current and next image in grayscale
-        if previous_image is not None:
-            next_image = cv2.imread(os.path.join(source, filename), cv2.IMREAD_GRAYSCALE)
-            diff = cv2.absdiff(previous_image, next_image)
-
-            # Apply a threshold and save the resulting image to the MaskD source. Less is more.
-            thresholded_file = cv2.threshold(diff, dfi_strength, 255, cv2.THRESH_BINARY_INV)[1] # Intrevert Colors
-            cv2.imwrite(os.path.join(maskD, f'{count-1:05d}.png'), thresholded_file)
+    # Inicializar contador
+    contador = 1
     
-        previous_image = cv2.imread(os.path.join(source, filename), cv2.IMREAD_GRAYSCALE)
+    umbral_size = dfi_strength
+    # Iterar a través de los archivos de imagen en la carpeta Source
+    for filename in sorted(os.listdir(source)):
+        # Cargar la imagen actual y la siguiente en escala de grises
+        if contador > 1:
+            siguiente = cv2.imread(os.path.join(source, filename), cv2.IMREAD_GRAYSCALE)
+            diff = cv2.absdiff(anterior, siguiente)
+    
+            # Aplicar un umbral y guardar la imagen resultante en la source MaskD. Menos es más.
+            umbral = umbral_size
+            umbralizado = cv2.threshold(diff, umbral, 255, cv2.THRESH_BINARY_INV)[1] # Invertir los colores
+            cv2.imwrite(os.path.join(maskD, f'{contador-1:04d}.png'), umbralizado)
+    
+        anterior = cv2.imread(os.path.join(source, filename), cv2.IMREAD_GRAYSCALE)
+        contador += 1
 
         # Currently, the thresholding type is cv2.THRESH_BINARY_INV, which inverts the colors of the thresholded image.
         # You can change it to another type of thresholding,
