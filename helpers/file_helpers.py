@@ -4,7 +4,7 @@ from tqdm import tqdm
 
 def copy_images(
     reference_frames_folder,
-    destination, 
+    source_folder, 
     frames_limit=0,
     frame_indicies=None,
 ):
@@ -21,7 +21,7 @@ def copy_images(
         if file.endswith(".jpg") or file.endswith(".jpeg") or file.endswith(".png"):
             img = Image.open(os.path.join(reference_frames_folder, file))
             rgb_img = img.convert('RGB')
-            rgb_img.save(os.path.join(destination, "{:04d}.jpeg".format(i+1)), "jpeg", quality=100)
+            rgb_img.save(os.path.join(source_folder, "{:04d}.jpeg".format(i+1)), "jpeg", quality=100)
             count += 1
             if frames_limit > 0 and count >= frames_limit:
                 break

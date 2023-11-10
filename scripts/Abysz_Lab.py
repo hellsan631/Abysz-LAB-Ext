@@ -44,9 +44,9 @@ def main(
 ):
     (maskD, maskS, output, source, gen) = init_project_folders()
     
-    copy_images(reference_frames_folder, destination=source, frames_limit=frames_limit)
+    copy_images(reference_frames_folder, source_folder=source, frames_limit=frames_limit)
     
-    sresize(generated_frames_folder)
+    sresize(generated_frames_folder, source_folder=source)
     
     sequential_generated_rename(generated_frames_folder)
     
@@ -61,7 +61,7 @@ def main(
         output_file = os.path.join(frames_output_folder, first_gen_file)
         shutil.copyfile(os.path.join(generated_frames_folder, first_gen_file), output_file)
    
-    denoise(denoise_blur)
+    denoise(denoise_blur, source_folder=source)
 
     greyscale_all_images(source, maskD, dfi_strength)
     dilate_all_images(maskD, dfi_deghost)
